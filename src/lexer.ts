@@ -15,6 +15,10 @@ export class Lexer {
     this.readChar();
   }
 
+  isDone() {
+    return this.position > this.input.length;
+  }
+
   nextToken() {
     let tok: Token;
 
@@ -24,7 +28,9 @@ export class Lexer {
       case "=".charCodeAt(0):
         if (this.peekChar() == "=".charCodeAt(0)) {
           const ch = this.ch;
+
           this.readChar();
+
           const literal =
             String.fromCharCode(ch) + String.fromCharCode(this.ch);
           tok = new Token(token.EQ, literal);
@@ -93,6 +99,7 @@ export class Lexer {
         }
     }
 
+    this.readChar();
     return tok;
   }
 

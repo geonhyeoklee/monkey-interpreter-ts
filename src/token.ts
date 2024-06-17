@@ -6,9 +6,17 @@ export class Token {
       this.literal = String.fromCharCode(literal);
     }
   }
+
+  getType() {
+    return this.type;
+  }
+
+  getLiteral() {
+    return this.literal;
+  }
 }
 
-export const token: Record<string, string> = {
+export const token = {
   ILLEGAL: "ILLEGAL",
   EOF: "EOF",
   IDENT: "IDENT",
@@ -38,7 +46,7 @@ export const token: Record<string, string> = {
   NOT_EQ: "!=",
 } as const;
 
-export const keywords: Record<string, keyof typeof token> = {
+const keywords: Record<string, keyof typeof token> = {
   fn: token.FUNCTION,
   let: token.LET,
   true: token.TRUE,
@@ -48,8 +56,10 @@ export const keywords: Record<string, keyof typeof token> = {
   return: token.RETURN,
 } as const;
 
-type Ident = keyof typeof keywords;
-
-export const lookupIdent = (ident: Ident) => {
-  return keywords[ident];
+export const lookupIdent = (ident: string) => {
+  if (ident in keywords) {
+    return keywords[ident];
+  } else {
+    return token.IDENT;
+  }
 };
