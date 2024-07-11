@@ -1,4 +1,44 @@
-type TokenType = string;
+export enum TokenType {
+    Illegal,
+    Eof,
+    Ident,
+    Int,
+    Assign,
+    Plus,
+    Minus,
+    Bang,
+    Asterisk,
+    Slash,
+    Comma,
+    Semicolon,
+    Lt,
+    Gt,
+    LParen,
+    RParen,
+    LBrace,
+    RBrace,
+    Function,
+    Let,
+    True,
+    False,
+    If,
+    Else,
+    Return,
+    Eq,
+    NotEq,
+}
+
+const KEYWORDS = new Map<string, TokenType>();
+
+{
+  KEYWORDS.set('fn', TokenType.Function);
+  KEYWORDS.set("let", TokenType.Let);
+  KEYWORDS.set("true", TokenType.True);
+  KEYWORDS.set("false", TokenType.False);
+  KEYWORDS.set("if", TokenType.If);
+  KEYWORDS.set("else", TokenType.Else);
+  KEYWORDS.set("return", TokenType.Return);
+}
 
 export class Token {
   constructor(protected type: TokenType, protected literal: string | number) {
@@ -16,50 +56,10 @@ export class Token {
   }
 }
 
-export const token = {
-  ILLEGAL: "ILLEGAL",
-  EOF: "EOF",
-  IDENT: "IDENT",
-  INT: "INT",
-  ASSIGN: "=",
-  PLUS: "+",
-  MINUS: "-",
-  BANG: "!",
-  ASTERISK: "*",
-  SLASH: "/",
-  COMMA: ",",
-  SEMICOLON: ";",
-  LT: "<",
-  GT: ">",
-  LPAREN: "(",
-  RPAREN: ")",
-  LBRACE: "{",
-  RBRACE: "}",
-  FUNCTION: "FUNCTION",
-  LET: "LET",
-  TRUE: "TRUE",
-  FALSE: "FALSE",
-  IF: "IF",
-  ELSE: "ELSE",
-  RETURN: "RETURN",
-  EQ: "==",
-  NOT_EQ: "!=",
-} as const;
-
-const keywords: Record<string, keyof typeof token> = {
-  fn: token.FUNCTION,
-  let: token.LET,
-  true: token.TRUE,
-  false: token.FALSE,
-  if: token.IF,
-  else: token.ELSE,
-  return: token.RETURN,
-} as const;
-
 export const lookupIdent = (ident: string) => {
-  if (ident in keywords) {
-    return keywords[ident];
+  if (KEYWORDS.has(ident)) {
+    return KEYWORDS.get(ident) as TokenType;
   } else {
-    return token.IDENT;
+    return TokenType.Ident;
   }
 };

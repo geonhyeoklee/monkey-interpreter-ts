@@ -1,4 +1,4 @@
-import { Token, lookupIdent, token } from "./token";
+import { Token, TokenType, lookupIdent } from "./token";
 
 export class Lexer {
   private input: string;
@@ -33,9 +33,9 @@ export class Lexer {
 
           const literal =
             String.fromCharCode(ch) + String.fromCharCode(this.ch);
-          tok = new Token(token.EQ, literal);
+          tok = new Token(TokenType.Eq, literal);
         } else {
-          tok = new Token(token.ASSIGN, this.ch);
+          tok = new Token(TokenType.Assign, this.ch);
         }
         break;
       case "!".charCodeAt(0):
@@ -44,58 +44,58 @@ export class Lexer {
           this.readChar();
           const literal =
             String.fromCharCode(ch) + String.fromCharCode(this.ch);
-          tok = new Token(token.NOT_EQ, literal);
+          tok = new Token(TokenType.NotEq, literal);
         } else {
-          tok = new Token(token.BANG, this.ch);
+          tok = new Token(TokenType.Bang, this.ch);
         }
         break;
       case "+".charCodeAt(0):
-        tok = new Token(token.PLUS, this.ch);
+        tok = new Token(TokenType.Plus, this.ch);
         break;
       case "-".charCodeAt(0):
-        tok = new Token(token.MINUS, this.ch);
+        tok = new Token(TokenType.Minus, this.ch);
         break;
       case "/".charCodeAt(0):
-        tok = new Token(token.SLASH, this.ch);
+        tok = new Token(TokenType.Slash, this.ch);
         break;
       case "*".charCodeAt(0):
-        tok = new Token(token.ASTERISK, this.ch);
+        tok = new Token(TokenType.Asterisk, this.ch);
         break;
       case "<".charCodeAt(0):
-        tok = new Token(token.LT, this.ch);
+        tok = new Token(TokenType.Lt, this.ch);
         break;
       case ">".charCodeAt(0):
-        tok = new Token(token.GT, this.ch);
+        tok = new Token(TokenType.Gt, this.ch);
         break;
       case "(".charCodeAt(0):
-        tok = new Token(token.LPAREN, this.ch);
+        tok = new Token(TokenType.LParen, this.ch);
         break;
       case ")".charCodeAt(0):
-        tok = new Token(token.RPAREN, this.ch);
+        tok = new Token(TokenType.RParen, this.ch);
         break;
       case ";".charCodeAt(0):
-        tok = new Token(token.SEMICOLON, this.ch);
+        tok = new Token(TokenType.Semicolon, this.ch);
         break;
       case ",".charCodeAt(0):
-        tok = new Token(token.COMMA, this.ch);
+        tok = new Token(TokenType.Comma, this.ch);
         break;
       case "{".charCodeAt(0):
-        tok = new Token(token.LBRACE, this.ch);
+        tok = new Token(TokenType.LBrace, this.ch);
         break;
       case "}".charCodeAt(0):
-        tok = new Token(token.RBRACE, this.ch);
+        tok = new Token(TokenType.RBrace, this.ch);
         break;
       case 0:
-        tok = new Token(token.EOF, "");
+        tok = new Token(TokenType.Eof, "");
         break;
       default:
         if (this.isLetter(this.ch)) {
           const literal = this.readIdentifier();
           tok = new Token(lookupIdent(literal), literal);
         } else if (this.isDigit(this.ch)) {
-          tok = new Token(token.INT, this.readNumber());
+          tok = new Token(TokenType.Int, this.readNumber());
         } else {
-          tok = new Token(token.ILLEGAL, this.ch);
+          tok = new Token(TokenType.Illegal, this.ch);
         }
     }
 
